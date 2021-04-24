@@ -9,7 +9,7 @@ import Header from './components/header/header.component';
 import SignInAndUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
 
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 
 class App extends React.Component {
@@ -24,10 +24,29 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user })
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
-      console.log(user);
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        // check if db has updated with any new data, onSnapshot same as setState
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+
+          console.log(this.state);
+        });
+      }
+
+      // if no userAuth or is logged out
+      else {
+        this.setState({ currentUser: userAuth })
+      }
+
     })
   }
 
