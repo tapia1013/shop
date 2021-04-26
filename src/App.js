@@ -21,7 +21,10 @@ class App extends React.Component {
     }
   }
 
+
   unsubscribeFromAuth = null;
+
+
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -49,17 +52,19 @@ class App extends React.Component {
   }
 
 
+
+
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
 
 
 
-
+  // we can remove currentUser in <header/>
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
