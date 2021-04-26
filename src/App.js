@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { connect } from 'react-redux'
 
@@ -69,12 +69,23 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/signin' component={SignInAndUpPage} />
+          <Route
+            exact
+            path='/signin'
+            render={
+              () => this.props.currentUser ? (<Redirect to="/" />) : (<SignInAndUpPage />)}
+          />
         </Switch>
       </div>
     )
   }
 }
+
+// this is for Redirect
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+})
+
 
 
 // we use dispatch to props cause we dont need users anymore unlike the headers.js so we use dispatch, cause it just sets it
@@ -86,4 +97,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 // we use connect to connect state to childs, we use null cause we dont need any Map To State arg
-export default connect(null, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
