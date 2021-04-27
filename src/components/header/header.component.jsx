@@ -8,11 +8,13 @@ import { auth } from '../../firebase/firebase.utils';
 
 import { ReactComponent as Logo } from '../../asssets/crown.svg'
 
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 import './header.styles.scss';
 
 
-const Header = ({ currentUser }) => {
+const Header = ({ currentUser, hidden }) => {
   return (
     <div className="header">
       <Link className="logo-container" to="/">
@@ -42,15 +44,20 @@ const Header = ({ currentUser }) => {
             </Link>
           )
         }
+        <CartIcon />
       </div>
+      {
+        hidden ? null : <CartDropdown />
+      }
     </div>
   )
 }
 
 
-// state is the top level rootReducer
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
+// state is the top level rootReducer...({user: {}}) is what we do when we want to destructure nested values
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser,
+  hidden
 })
 
 export default connect(mapStateToProps)(Header);
