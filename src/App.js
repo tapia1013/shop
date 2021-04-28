@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect';
+
 
 
 import HomePage from './pages/homepage/homepage.component';
@@ -9,7 +11,8 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setCurrentUser } from './redux/user/user.actions'
+import { setCurrentUser } from './redux/user/user.actions';
+import { selectCurrentUser } from './redux/user/user.selectors'
 
 
 
@@ -81,9 +84,11 @@ class App extends React.Component {
   }
 }
 
+
+
 // this is for Redirect
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 })
 
 
@@ -91,9 +96,7 @@ const mapStateToProps = ({ user }) => ({
 // we use dispatch to props cause we dont need users anymore unlike the headers.js so we use dispatch, cause it just sets it
 const mapDispatchToProps = dispatch => ({
   // current users action passes through here
-  setCurrentUser: user => {
-    return dispatch(setCurrentUser(user))
-  }
+  setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 
 // we use connect to connect state to childs, we use null cause we dont need any Map To State arg
