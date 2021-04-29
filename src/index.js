@@ -29,3 +29,18 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+
+
+
+
+
+
+
+
+
+// REDUX 2 VIDEO 1 @ 4/29/2021
+
+
+
+
