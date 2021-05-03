@@ -27,6 +27,9 @@ export default CategoryPage;
 
 
 
+
+
+
 /**
  * ANNOYING NAMING OF COMPONENTS FROM VIDEO
  * ADVANCED ROUTING VIDEO 2
